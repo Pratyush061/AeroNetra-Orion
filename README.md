@@ -12,6 +12,8 @@
 
 </div>
 
+> **New here?** Read the **[Friendly Guide](GUIDE.md)** — a plain-language walkthrough of what this does, how to run it, how to test it, and what to do with it.
+
 ---
 
 ## Why this exists
