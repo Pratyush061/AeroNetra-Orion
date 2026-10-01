@@ -1,0 +1,58 @@
+# AeroNetra-Orion — default configuration
+# Every field mirrors src/orion/config.py; override any subset here.
+
+events:
+  threshold: 0.18          # DVS contrast threshold C on log-intensity change
+  window_ms: 15.0
+
+scene:
+  width: 640
+  height: 480
+  num_vehicles: 6
+  num_intruders: 1
+  frames: 72
+  fps: 30.0
+  ego_speed: 2.5           # px/frame camera translation
+  motion_blur_px: 7        # injected blur length (0 disables)
+  intruder_growth_min: 0.5 # apparent-size growth/s for approaching intruders
+  intruder_growth_max: 0.9
+  seed: 7
+
+fusion:
+  sharpen_strength: 0.7
+  event_gain: 0.5
+  temporal_alpha: 0.35
+  use_events: true
+
+detect:
+  background_alpha: 0.05
+  diff_threshold: 20
+  min_area: 40
+  max_area_frac: 0.25
+  morph_kernel: 3
+  onnx_path: null
+  score_threshold: 0.35
+
+track:
+  iou_threshold: 0.15
+  max_age: 10
+  min_hits: 2
+  process_noise: 0.05
+  measurement_noise: 0.6
+
+predict:
+  horizon_s: 1.0
+  dt: 0.0333333333
+  backend: kalman          # or "torch" with the optional extra
+  torch_model: null
+  safety_radius_px: 46.0
+  corridor_x0: 0.44
+  corridor_y0: 0.38
+  corridor_x1: 0.56
+  corridor_y1: 0.62
+
+output_dir: outputs
+save_video: true
+save_frames: false
+dataset: null
+data_root: data
