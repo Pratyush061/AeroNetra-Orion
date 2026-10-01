@@ -41,10 +41,10 @@ def _cmd_run(args) -> int:
 
 
 def _cmd_list_datasets(_args) -> int:
-    print(f"{'key':<14}{'kind':<9}{'modality':<26}name")
-    print("-" * 78)
+    print(f"{'key':<14}{'kind':<9}{'modality':<30}name")
+    print("-" * 82)
     for spec in list_datasets():
-        print(f"{spec.key:<14}{spec.kind:<9}{spec.modality:<26}{spec.name}")
+        print(f"{spec.key:<14}{spec.kind:<9}{spec.modality:<30}{spec.name}")
     return 0
 
 
@@ -60,7 +60,9 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--out", default=None, help="Output directory")
     demo.set_defaults(func=_cmd_demo)
 
-    run = sub.add_parser("run", help="Run with an explicit config file")
+    run = sub.add_parser(
+        "run", help="Run with an explicit config file (uses the synthetic scene)"
+    )
     run.add_argument("--config", required=True, help="Path to a YAML config")
     run.add_argument("--out", default=None, help="Output directory")
     run.set_defaults(func=_cmd_run)

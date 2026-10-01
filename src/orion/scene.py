@@ -77,12 +77,19 @@ class SyntheticAerialScene:
         road[self.road_y0 : self.road_y1, :] = np.clip(band + 10, 0, 255).astype(np.uint8)
         self.background = road
 
+        # Entity sizes scale with the frame so the generator stays valid at any
+        # resolution: a vehicle must always fit inside the road band.
+        band_h = max(1, self.road_y1 - self.road_y0)
+        small = min(H, W)
+
         self.vehicles: list[dict] = []
         for _ in range(cfg.num_vehicles):
-            w = int(self.rng.integers(26, 46))
-            h = int(self.rng.integers(18, 30))
-            x = int(self.rng.integers(0, W - w))
-            y = int(self.rng.integers(self.road_y0, self.road_y1 - h))
+            h = int(self.rng.integers(max(4, band_h // 8), max(5, min(30, band_h // 2)) + 1))
+            w = int(self.rng.integers(max(6, int(h * 1.2)), max(8, int(h * 1.8)) + 1))
+            w = max(1, min(w, max(1, W - 1)))
+            h = max(1, min(h, band_h - 1))
+            x = int(self.rng.integers(0, max(1, W - w)))
+            y = int(self.rng.integers(self.road_y0, max(self.road_y0 + 1, self.road_y1 - h)))
             vx = float(self.rng.uniform(20, 70)) * (1 if self.rng.random() > 0.5 else -1)
             # high-contrast paint: either bright or dark against the mid-grey ground
             if self.rng.random() > 0.5:
@@ -95,11 +102,13 @@ class SyntheticAerialScene:
 
         self.intruders: list[dict] = []
         for _ in range(cfg.num_intruders):
-            w0 = h0 = int(self.rng.integers(16, 24))
+            w0 = h0 = int(self.rng.integers(max(4, small // 28), max(6, small // 18) + 1))
             # start near the top, roughly on the flight axis, so the descent
             # genuinely crosses the UAV's forward corridor
-            x = int(W / 2 - w0 / 2 + self.rng.integers(-40, 41))
-            y = int(self.rng.integers(0, int(H * 0.22)))
+            span = max(1, W // 8)
+            x = int(W / 2 - w0 / 2 + self.rng.integers(-span, span + 1))
+            x = max(0, min(x, max(0, W - w0)))
+            y = int(self.rng.integers(0, max(1, int(H * 0.22))))
             self.intruders.append(
                 dict(
                     x=x, y=y, w=w0, h=h0, w0=w0, h0=h0,

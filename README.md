@@ -78,13 +78,13 @@ You will get an annotated video, a metrics file, and a printed summary:
 ```
 AeroNetra-Orion — demo complete
   frames: 72
-  events_total: 95,235
-  mean_detections: 9.78
-  mean_tracks: 9.22
-  critical_alerts: 43
+  events_total: 113,325
+  mean_detections: 9.58
+  mean_tracks: 9.19
+  critical_alerts: 52
   min_ttc_s: 0.033
-  mean_recall: 0.839
-  elapsed_s: 2.68
+  mean_recall: 0.702
+  elapsed_s: 2.62
   video: outputs/orion_demo.mp4
 ```
 
@@ -162,7 +162,7 @@ AeroNetra-Orion/
 
 ```bash
 pip install -e ".[dev]"
-pytest -q        # 43 tests
+pytest -q        # 50 tests
 ruff check .
 ```
 
